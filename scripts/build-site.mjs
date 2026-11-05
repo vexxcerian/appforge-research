@@ -31,9 +31,10 @@ fs.writeFileSync(path.join(DIST, 'index.html'), `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#070d1a">
 <title>AppForge Research</title>
-<meta http-equiv="refresh" content="0; url=web/">
+<meta http-equiv="refresh" content="0; url=web/index.html">
 <style>body{background:#070d1a;margin:0}</style>
-<script>location.replace('web/' + location.search + location.hash);</script>
+<script>// Name the file: Android's app server sends extension-less paths like web/ back to this page.
+location.replace('web/index.html' + location.search + location.hash);</script>
 </head><body></body></html>
 `);
 fs.writeFileSync(path.join(DIST, '.nojekyll'), '');

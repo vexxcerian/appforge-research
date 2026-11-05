@@ -40,7 +40,12 @@ test('web manifest is installable', () => {
 test('site build stamps the cache version and redirects to the app', () => {
   execFileSync(process.execPath, ['scripts/build-site.mjs', '--version', 'abc123'], { cwd: ROOT, stdio: 'pipe' });
   assert.match(read('dist/web/sw.js'), /const VERSION = 'abc123';/);
-  assert.match(read('dist/index.html'), /location\.replace\('web\//);
+  const root = read('dist/index.html');
+  // Android's app server sends any path whose last part has no "." back to
+  // index.html, so a redirect to "web/" loops forever. It must name the file.
+  const targets = [...root.matchAll(/location\.replace\('([^']+)'/g), ...root.matchAll(/url=([^"]+)"/g)].map((m) => m[1]);
+  assert.equal(targets.length, 2);
+  for (const t of targets) assert.match(t.split('/').pop(), /\./, `redirect target "${t}" needs a file extension`);
   for (const f of ['src/research.js', 'prompts/research-agent.md', 'schema/business-profile.schema.json', 'config/modules.json', 'web/app.js']) {
     assert.ok(fs.existsSync(path.join(ROOT, 'dist', f)), f);
   }

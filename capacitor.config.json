@@ -1,0 +1,11 @@
+{
+  "appId": "com.vexx.appforgeresearch",
+  "appName": "AppForge Research",
+  "webDir": "dist",
+  "android": {
+    "backgroundColor": "#070d1a"
+  },
+  "plugins": {
+    "CapacitorHttp": { "enabled": false }
+  }
+}

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <radialGradient id="bg" cx="72%" cy="18%" r="95%">
+      <stop offset="0" stop-color="#16295a"/>
+      <stop offset=".55" stop-color="#0b1530"/>
+      <stop offset="1" stop-color="#070d1a"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="14" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <!-- phone -->
+  <g filter="url(#glow)" fill="none" stroke="#4c8dff" stroke-width="38" stroke-linejoin="round">
+    <rect x="300" y="210" width="330" height="560" rx="58"/>
+  </g>
+  <!-- app tiles inside the phone -->
+  <g fill="#4c8dff" opacity=".9">
+    <rect x="352" y="300" width="94" height="94" rx="22"/>
+    <rect x="484" y="300" width="94" height="94" rx="22"/>
+    <rect x="352" y="432" width="94" height="94" rx="22"/>
+  </g>
+  <!-- magnifier, the research -->
+  <g filter="url(#glow)" stroke="#48d6a4" stroke-linecap="round" fill="none">
+    <circle cx="600" cy="560" r="118" stroke-width="40" fill="#070d1a"/>
+    <line x1="686" y1="648" x2="780" y2="742" stroke-width="56"/>
+  </g>
+  <circle cx="600" cy="560" r="34" fill="#48d6a4"/>
+</svg>

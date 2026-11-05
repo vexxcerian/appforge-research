@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#070d1a">
 <title>AppForge Research</title>
+<meta name="description" content="Research a small business and plan its custom app.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AF Research">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
@@ -154,6 +162,7 @@
     <div class="wrap">
       <p class="brand">AppForge <span>Research</span></p>
       <div class="row" style="flex:0 0 auto">
+        <button class="ghost" id="install" type="button" hidden>Install</button>
         <button class="ghost" id="open-file" type="button">Open profile</button>
         <button class="ghost" id="open-settings" type="button">Keys</button>
       </div>
@@ -166,6 +175,7 @@
       <li data-step="review"><b>2</b>Owner review</li>
       <li data-step="build"><b>3</b>Build</li>
     </ol>
+    <p class="note" id="ios-install" hidden>To install on iPhone: tap the Share button, then <strong>Add to Home Screen</strong>.</p>
     <div id="view" aria-live="polite"></div>
   </main>
 

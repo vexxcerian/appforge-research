@@ -23,6 +23,20 @@ name + town
 5. Brief         build brief + app.json for AppForge → index.html → web, Android, iPhone
 ```
 
+## Install the app
+
+| Phone | How |
+|---|---|
+| **Android** | Open [the latest Android build](https://github.com/vexxcerian/appforge-research/releases/tag/android-latest) on your phone, tap **AppForge-Research.apk**, and allow installs from your browser if Android asks. New builds install over the old one and keep your saved keys. |
+| **iPhone** | Open **https://vexxcerian.github.io/appforge-research/** in Safari, tap Share, then **Add to Home Screen**. |
+| **Android, no APK** | Open the same link in Chrome and tap **Install**. |
+
+First time in the app, tap **Keys** and paste your Anthropic API key (and a Google Places key if you have one). Keys stay on the phone.
+
+The Android app can read a business website's colors and run the Google lookup directly. The iPhone and browser versions can't (browsers block reading other sites), so colors become an owner question there.
+
+Every push to `main` rebuilds both: the **Android app** workflow publishes a new APK to the `android-latest` release, and the **Web app** workflow republishes the site. The APK is signed with the debug key in `android-keys/`; see the note there before handing the APK to anyone else.
+
 ## Quick start (command line)
 
 Needs Node 20 or newer.
@@ -62,15 +76,15 @@ Each profile folder ends up with:
 
 `plan.js` refuses to build until the owner has confirmed the profile. `--draft` gives you a preview anyway.
 
-## Web screen (phone friendly)
+## Running the app on your computer
 
 ```bash
-npm run serve      # http://localhost:5174/
+npm run serve        # http://localhost:5174/
+npm run build:site   # dist/, what GitHub Pages publishes
+npm run android      # dist-android/AppForge-Research.apk (needs Java 21 and the Android SDK)
 ```
 
-Three steps: Research, Owner review, Build. Add your keys under **Keys**; they stay in that browser only. Two limits in the browser: it can't read a website's CSS (browsers block that), so colors become an owner question instead, and the Google Places lookup may be blocked depending on your key's settings. The command line has neither limit.
-
-To serve it from GitHub Pages or the AppForge site, publish the `web/`, `src/`, `prompts/`, `schema/` and `config/` folders together; `web/app.js` loads the others by relative path.
+The app has three steps: Research, Owner review, Build. It works offline for reviewing saved profiles; research and app generation need a connection.
 
 ## What's in the repo
 
@@ -90,6 +104,10 @@ To serve it from GitHub Pages or the AppForge site, publish the `web/`, `src/`, 
 | `src/places.js` | Google Places (New) Text Search. |
 | `src/claude.js` | Small Claude API client (no SDK; works in Node and the browser). |
 | `examples/` | A made-up bakery run all the way through: profile, plan, brief, app.json. |
+| `web/` | The app itself: screens, manifest, offline worker, icons. |
+| `scripts/` | Site build, Android build and Android version/signing setup. |
+| `assets/`, `android-keys/` | Icon and splash sources; the debug signing key. |
+| `capacitor.config.json` | Android app ID and name. The `android/` project is generated on each build. |
 
 ### Changing what apps get built
 
@@ -127,6 +145,6 @@ To serve it from GitHub Pages or the AppForge site, publish the `web/`, `src/`, 
 npm test
 ```
 
-40 tests cover the schema (checked against Ajv), the structured-output limits, repairing bad model output, pause/continue handling for long research turns, the full research run with mocked Claude and Google responses and a real local website for brand colors, both fallbacks, owner answers and hours parsing, planning rules, the brief and app.json against AppForge's checks, and the command-line tools end to end against a mock API. GitHub Actions runs them on every push.
+44 tests cover the offline cache list, the manifest, the site and Android build setup, the schema (checked against Ajv), the structured-output limits, repairing bad model output, pause/continue handling for long research turns, the full research run with mocked Claude and Google responses and a real local website for brand colors, both fallbacks, owner answers and hours parsing, planning rules, the brief and app.json against AppForge's checks, and the command-line tools end to end against a mock API. GitHub Actions runs them on every push.
 
 The tests don't call the real Claude or Google APIs. The first live run is the real check of prompt quality; read `research-notes.md` and `run.json` from your first few businesses and adjust `prompts/research-agent.md` from there.

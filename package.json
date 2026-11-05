@@ -22,9 +22,19 @@
     "confirm": "node bin/confirm.js",
     "plan": "node bin/plan.js",
     "generate": "node bin/generate.js",
-    "serve": "node bin/serve.js"
+    "serve": "node bin/serve.js",
+    "build:site": "node scripts/build-site.mjs",
+    "android": "node scripts/build-android.mjs"
   },
   "devDependencies": {
+    "@capacitor/assets": "^4.0.0",
+    "@capacitor/cli": "^8.6.0",
     "ajv": "^8.20.0"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/core": "^8.6.0",
+    "@capacitor/filesystem": "^8.1.5",
+    "@capacitor/share": "^8.0.3"
   }
 }

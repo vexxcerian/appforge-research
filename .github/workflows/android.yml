@@ -1,0 +1,63 @@
+name: Android app
+# Builds the APK on every push and puts it on the "android-latest" release:
+# https://github.com/<owner>/<repo>/releases/tag/android-latest
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: android
+  cancel-in-progress: true
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - run: npm ci
+      - name: Use your own signing key if one is set
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+            {
+              echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/release.jks"
+              echo "ANDROID_KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD"
+              echo "ANDROID_KEY_ALIAS=$KEY_ALIAS"
+              echo "ANDROID_KEY_PASSWORD=$KEY_PASSWORD"
+            } >> "$GITHUB_ENV"
+            echo "Signing with the repository's own key."
+          else
+            echo "Signing with the committed debug key (android-keys/)."
+          fi
+      - run: npm run android -- --version-code ${{ github.run_number }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AppForge-Research-apk
+          path: dist-android/AppForge-Research.apk
+      - name: Publish to the android-latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          NOTES="Version 1.0.${{ github.run_number }}, built from ${GITHUB_SHA::7} on $(date -u +%F).
+
+          To install: open this page on your Android phone, tap AppForge-Research.apk, then allow installs from your browser if Android asks. New versions install over the old one and keep your saved keys."
+          if gh release view android-latest >/dev/null 2>&1; then
+            gh release edit android-latest --notes "$NOTES"
+          else
+            gh release create android-latest --title "Android app (latest build)" --notes "$NOTES" --target "$GITHUB_SHA"
+          fi
+          gh release upload android-latest dist-android/AppForge-Research.apk --clobber

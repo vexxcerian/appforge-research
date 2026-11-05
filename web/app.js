@@ -11,6 +11,57 @@ const store = {
   set(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* storage off: state lives in memory */ } },
 };
 
+// ---------------------------------------------------------------- app shell
+// Inside the Android app (Capacitor), native HTTP can read other websites,
+// which browsers block. That turns on website colors and the Google lookup.
+const native = () => !!window.Capacitor?.isNativePlatform?.();
+const NativeHttp = () => window.Capacitor?.Plugins?.CapacitorHttp;
+
+async function nativeFetch(url, init = {}) {
+  const Http = NativeHttp();
+  if (!Http) return fetch(url, init);
+  let data;
+  if (init.body) { try { data = JSON.parse(init.body); } catch { data = init.body; } }
+  const r = await Http.request({ url: String(url), method: init.method || 'GET', headers: init.headers || {}, data, responseType: 'text', connectTimeout: 15000, readTimeout: 20000 });
+  const body = typeof r.data === 'string' ? r.data : JSON.stringify(r.data ?? '');
+  const res = new Response(body, { status: r.status >= 200 && r.status <= 599 ? r.status : 502, headers: r.headers || {} });
+  Object.defineProperty(res, 'url', { value: r.url || String(url) });
+  return res;
+}
+
+if ('serviceWorker' in navigator && !native() && location.protocol !== 'file:') {
+  navigator.serviceWorker.register('./sw.js').catch(() => { /* offline mode just won't be available */ });
+}
+
+let installPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  installPrompt = e;
+  document.getElementById('install').hidden = false;
+});
+document.getElementById('install').addEventListener('click', async () => {
+  if (!installPrompt) return;
+  installPrompt.prompt();
+  await installPrompt.userChoice.catch(() => null);
+  installPrompt = null;
+  document.getElementById('install').hidden = true;
+});
+{
+  const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  let dismissed = false;
+  try { dismissed = localStorage.getItem('afr.iosHint') === 'no'; } catch { /* ignore */ }
+  const hint = document.getElementById('ios-install');
+  if (ios && !standalone && !native() && !dismissed) {
+    hint.hidden = false;
+    hint.insertAdjacentHTML('beforeend', ' <button class="ghost" type="button" id="ios-hide">Got it</button>');
+    document.getElementById('ios-hide').addEventListener('click', () => {
+      hint.hidden = true;
+      try { localStorage.setItem('afr.iosHint', 'no'); } catch { /* ignore */ }
+    });
+  }
+}
+
 const DEFAULT_SETTINGS = { anthropicKey: '', placesKey: '', researchModel: 'claude-sonnet-5-5', generateModel: 'claude-opus-5-5', appIdPrefix: 'com.appforge' };
 let settings = { ...DEFAULT_SETTINGS, ...store.get('afr.settings', {}) };
 let state = store.get('afr.state', null) || { step: 'intake', intake: {}, profile: null, notes: '', warnings: [] };
@@ -119,7 +170,10 @@ async function onResearch(e) {
       apiKey: settings.anthropicKey,
       placesApiKey: settings.placesKey || undefined,
       researchModel: settings.researchModel,
-      brandSignals: false, // browsers can't read other sites' CSS; the CLI can
+      // Browsers can't read other sites' CSS; the Android app and the CLI can.
+      brandSignals: native(),
+      siteFetchImpl: native() ? nativeFetch : undefined,
+      placesFetchImpl: native() ? nativeFetch : undefined,
       onProgress: (ev) => {
         if (ev.step === 'research' && ev.searches !== undefined) mark('research', `Searching the web and reading their pages: ${ev.searches} searches, ${ev.fetches} pages so far`);
         else if (ev.step in steps) mark(ev.step);
@@ -363,7 +417,17 @@ async function renderBuild(view) {
 
 const cap = (s) => String(s || '').charAt(0).toUpperCase() + String(s || '').slice(1);
 
-function download(name, text, type) {
+async function download(name, text, type) {
+  const P = window.Capacitor?.Plugins;
+  if (native() && P?.Filesystem && P?.Share) {
+    try {
+      const { uri } = await P.Filesystem.writeFile({ path: name, data: text, directory: 'CACHE', encoding: 'utf8' });
+      await P.Share.share({ title: name, url: uri, dialogTitle: `Save or send ${name}` });
+      return;
+    } catch (e) {
+      if (/cancel/i.test(e?.message || '')) return;
+    }
+  }
   const url = URL.createObjectURL(new Blob([text], { type }));
   const a = Object.assign(document.createElement('a'), { href: url, download: name });
   document.body.append(a);

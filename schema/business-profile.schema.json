@@ -1,0 +1,311 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://appforge.app/schema/business-profile/1.0.json",
+  "title": "AppForge business profile",
+  "description": "Everything AppForge learned about one business, with sources and the questions the owner must confirm before an app is built. Unknown values are empty strings, empty arrays or false, never guesses.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "generated_at", "research_meta", "owner_confirmed", "business", "contact", "hours", "offerings", "existing_tools", "brand", "socials", "audience", "reputation", "differentiators", "competitors", "app_opportunities", "sources", "facts_provenance", "confidence", "needs_confirmation"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0", "description": "Set by code." },
+    "generated_at": { "type": "string", "format": "date-time", "description": "When research finished. Set by code." },
+    "research_meta": {
+      "type": "object",
+      "description": "How the profile was produced. Set by code.",
+      "additionalProperties": false,
+      "required": ["research_model", "extract_model", "tool_mode", "web_searches", "web_fetches", "places_used", "brand_signals_used", "notes_truncated"],
+      "properties": {
+        "research_model": { "type": "string" },
+        "extract_model": { "type": "string" },
+        "tool_mode": { "type": "string", "enum": ["dynamic", "basic", "mock"] },
+        "web_searches": { "type": "integer", "minimum": 0 },
+        "web_fetches": { "type": "integer", "minimum": 0 },
+        "places_used": { "type": "boolean" },
+        "brand_signals_used": { "type": "boolean" },
+        "notes_truncated": { "type": "boolean" }
+      }
+    },
+    "owner_confirmed": {
+      "type": "object",
+      "description": "Whether the owner reviewed and confirmed this profile. Set by code.",
+      "additionalProperties": false,
+      "required": ["confirmed", "confirmed_at", "ownership_verified", "verification_method"],
+      "properties": {
+        "confirmed": { "type": "boolean" },
+        "confirmed_at": { "type": "string", "maxLength": 40 },
+        "ownership_verified": { "type": "boolean" },
+        "verification_method": { "type": "string", "maxLength": 80 }
+      }
+    },
+    "business": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "tagline", "description", "industry", "subcategory", "business_model", "status", "year_founded", "price_level"],
+      "properties": {
+        "name": { "type": "string", "maxLength": 120, "description": "Name exactly as the business writes it." },
+        "tagline": { "type": "string", "maxLength": 90, "description": "Their own slogan if they have one, otherwise a short plain description of what they are." },
+        "description": { "type": "string", "maxLength": 700, "description": "2-4 sentences: what they sell, who they serve, what stands out. Facts only." },
+        "industry": {
+          "type": "string",
+          "enum": ["restaurant", "cafe_bakery", "bar_brewery", "food_truck_catering", "salon_barber", "spa_wellness", "fitness_gym", "medical_dental", "home_services", "auto_services", "repair_services", "retail_store", "ecommerce_brand", "real_estate", "professional_services", "legal_services", "financial_insurance", "church_nonprofit", "education_childcare", "pet_services", "events_entertainment", "lodging_hospitality", "photography_creative", "cleaning_services", "other"]
+        },
+        "subcategory": { "type": "string", "maxLength": 80, "description": "Specific kind, for example 'cottage-law home bakery' or 'mobile auto detailing'." },
+        "business_model": { "type": "string", "enum": ["storefront", "appointment_based", "service_area", "online_only", "mobile_popup", "mixed"] },
+        "status": { "type": "string", "enum": ["operating", "temporarily_closed", "permanently_closed", "unknown"] },
+        "year_founded": { "type": "string", "pattern": "^(\\d{4})?$", "description": "Four-digit year or empty." },
+        "price_level": { "type": "string", "enum": ["budget", "moderate", "upscale", "unknown"] }
+      }
+    },
+    "contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phone", "email", "website", "address", "address_is_public", "service_area", "google_maps_url"],
+      "properties": {
+        "phone": { "type": "string", "maxLength": 30, "description": "The business's published phone number." },
+        "email": { "type": "string", "maxLength": 120, "description": "The business's published email address." },
+        "website": { "type": "string", "maxLength": 300 },
+        "address": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["street", "city", "region", "postal_code", "country"],
+          "properties": {
+            "street": { "type": "string", "maxLength": 160 },
+            "city": { "type": "string", "maxLength": 80 },
+            "region": { "type": "string", "maxLength": 80, "description": "State or province." },
+            "postal_code": { "type": "string", "maxLength": 20 },
+            "country": { "type": "string", "maxLength": 2, "description": "Two-letter country code, for example US." }
+          }
+        },
+        "address_is_public": { "type": "boolean", "description": "False for home-based or service-area businesses that do not publish a street address. Street stays empty then." },
+        "service_area": { "type": "array", "maxItems": 30, "items": { "type": "string", "maxLength": 80 }, "description": "Towns, counties or radius the business serves." },
+        "google_maps_url": { "type": "string", "maxLength": 300 }
+      }
+    },
+    "hours": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["known", "weekly", "notes", "basis"],
+      "properties": {
+        "known": { "type": "boolean" },
+        "weekly": {
+          "type": "array",
+          "maxItems": 21,
+          "description": "One entry per open span. Closed days have no entry. A lunch break means two entries for that day. A close time earlier than the open time means past midnight.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["day", "open", "close"],
+            "properties": {
+              "day": { "type": "string", "enum": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"] },
+              "open": { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$" },
+              "close": { "type": "string", "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$" }
+            }
+          }
+        },
+        "notes": { "type": "string", "maxLength": 300, "description": "Seasonal hours, holidays, by-appointment-only, 24/7 emergency service." },
+        "basis": { "type": "string", "enum": ["business_website", "google_listing", "social_profile", "review_site", "directory", "news", "owner", "inferred", "none"] }
+      }
+    },
+    "offerings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "categories", "tags"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["menu", "services", "products", "mixed", "unknown"] },
+        "categories": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "items"],
+            "properties": {
+              "name": { "type": "string", "maxLength": 60 },
+              "items": {
+                "type": "array",
+                "maxItems": 60,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["name", "description", "price"],
+                  "properties": {
+                    "name": { "type": "string", "maxLength": 100 },
+                    "description": { "type": "string", "maxLength": 240 },
+                    "price": { "type": "string", "maxLength": 40, "description": "As published, for example '$4.50', '$25-40', 'From $60'. Empty if not published." }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": { "type": "array", "maxItems": 15, "items": { "type": "string", "maxLength": 40 }, "description": "Dietary or specialty tags such as gluten-free, vegan, licensed and insured, walk-ins welcome." }
+      }
+    },
+    "existing_tools": {
+      "type": "array",
+      "maxItems": 12,
+      "description": "Ordering, booking or store systems the business already uses. The app links to these instead of replacing them.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "provider", "url"],
+        "properties": {
+          "type": { "type": "string", "enum": ["online_ordering", "reservations", "appointment_booking", "delivery_platform", "ecommerce_store", "quote_form", "gift_cards", "loyalty_program", "other"] },
+          "provider": { "type": "string", "maxLength": 60, "description": "For example Square, Toast, DoorDash, Booksy, Vagaro, Shopify, Etsy, Jotform." },
+          "url": { "type": "string", "maxLength": 300 }
+        }
+      }
+    },
+    "brand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["colors", "logo_url", "fonts_observed", "tone", "voice_notes", "imagery_notes"],
+      "properties": {
+        "colors": {
+          "type": "array",
+          "maxItems": 6,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["hex", "role", "basis"],
+            "properties": {
+              "hex": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+              "role": { "type": "string", "enum": ["primary", "secondary", "accent", "background", "text"] },
+              "basis": { "type": "string", "enum": ["website_css", "logo", "social_profile", "inferred"] }
+            }
+          }
+        },
+        "logo_url": { "type": "string", "maxLength": 400 },
+        "fonts_observed": { "type": "array", "maxItems": 4, "items": { "type": "string", "maxLength": 60 } },
+        "tone": { "type": "string", "enum": ["friendly_casual", "warm_family", "professional", "luxury_elegant", "bold_energetic", "rustic_homemade", "playful", "faith_community", "technical"] },
+        "voice_notes": { "type": "string", "maxLength": 300, "description": "How they talk to customers: words they use, emoji, formality." },
+        "imagery_notes": { "type": "string", "maxLength": 300, "description": "What their photos show and their visual style." }
+      }
+    },
+    "socials": {
+      "type": "array",
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["platform", "url", "handle"],
+        "properties": {
+          "platform": { "type": "string", "enum": ["facebook", "instagram", "tiktok", "youtube", "x", "linkedin", "pinterest", "yelp", "google", "nextdoor", "other"] },
+          "url": { "type": "string", "maxLength": 300 },
+          "handle": { "type": "string", "maxLength": 80 }
+        }
+      }
+    },
+    "audience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary_customers", "languages", "local_focus"],
+      "properties": {
+        "primary_customers": { "type": "array", "maxItems": 6, "items": { "type": "string", "maxLength": 80 }, "description": "Who buys from them, as evidenced (families, office lunch crowd, homeowners)." },
+        "languages": { "type": "array", "maxItems": 4, "items": { "type": "string", "maxLength": 30 } },
+        "local_focus": { "type": "boolean", "description": "True when customers are mostly local or nearby." }
+      }
+    },
+    "reputation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["has_reviews", "rating", "review_count", "rating_source", "praise_themes", "complaint_themes"],
+      "properties": {
+        "has_reviews": { "type": "boolean" },
+        "rating": { "type": "number", "minimum": 0, "maximum": 5, "description": "Average star rating, 0 when has_reviews is false." },
+        "review_count": { "type": "integer", "minimum": 0 },
+        "rating_source": { "type": "string", "maxLength": 40, "description": "Where the rating came from, for example Google." },
+        "praise_themes": { "type": "array", "maxItems": 6, "items": { "type": "string", "maxLength": 120 }, "description": "Recurring compliments, paraphrased. No quotes or reviewer names." },
+        "complaint_themes": { "type": "array", "maxItems": 6, "items": { "type": "string", "maxLength": 120 }, "description": "Recurring complaints, paraphrased. No quotes or reviewer names." }
+      }
+    },
+    "differentiators": { "type": "array", "maxItems": 6, "items": { "type": "string", "maxLength": 140 } },
+    "competitors": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "note"],
+        "properties": {
+          "name": { "type": "string", "maxLength": 100 },
+          "note": { "type": "string", "maxLength": 200, "description": "What the competitor offers that matters for this app, such as online ordering." }
+        }
+      }
+    },
+    "app_opportunities": {
+      "type": "array",
+      "maxItems": 8,
+      "description": "Features the evidence says customers need, each tied to a module from the library.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["module", "need", "evidence"],
+        "properties": {
+          "module": {
+            "type": "string",
+            "enum": ["home", "about", "contact", "hours", "menu", "online_ordering", "specials", "reservations", "appointment_booking", "services_list", "staff_profiles", "gallery", "portfolio", "quote_request", "service_area", "product_catalog", "loyalty", "reviews_showcase", "events_calendar", "class_schedule", "listings", "faq", "donations", "emergency_contact", "client_forms"]
+          },
+          "need": { "type": "string", "maxLength": 160 },
+          "evidence": { "type": "string", "maxLength": 240, "description": "What in the research shows this need, with source ids like [S2]." }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "maxItems": 30,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "url", "title", "kind"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^S\\d{1,2}$" },
+          "url": { "type": "string", "maxLength": 400 },
+          "title": { "type": "string", "maxLength": 160 },
+          "kind": { "type": "string", "enum": ["business_website", "google_listing", "social_profile", "review_site", "directory", "news", "owner", "other"] }
+        }
+      }
+    },
+    "facts_provenance": {
+      "type": "array",
+      "maxItems": 20,
+      "description": "Where the key facts came from: business.name, contact.address, contact.phone, hours, offerings, brand.colors at minimum.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "source_ids", "basis"],
+        "properties": {
+          "field": { "type": "string", "maxLength": 60 },
+          "source_ids": { "type": "array", "maxItems": 6, "items": { "type": "string", "pattern": "^S\\d{1,2}$" } },
+          "basis": { "type": "string", "enum": ["business_website", "google_listing", "social_profile", "review_site", "directory", "news", "owner", "inferred", "none"] }
+        }
+      }
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["overall", "identity_match", "identity_notes"],
+      "properties": {
+        "overall": { "type": "string", "enum": ["high", "medium", "low"] },
+        "identity_match": { "type": "string", "enum": ["confirmed", "likely", "uncertain"], "description": "confirmed: name plus at least two of address, phone, website agree across sources. likely: one agrees. uncertain: conflicting or no match." },
+        "identity_notes": { "type": "string", "maxLength": 400, "description": "Similarly named businesses found and why this one is the match." }
+      }
+    },
+    "needs_confirmation": {
+      "type": "array",
+      "maxItems": 25,
+      "description": "Questions for the owner before building. Anything inferred, conflicting, from one non-business source, possibly outdated, or missing but needed.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "question", "current_value", "reason"],
+        "properties": {
+          "field": { "type": "string", "maxLength": 60, "description": "Dotted path of the field, for example hours or contact.phone." },
+          "question": { "type": "string", "maxLength": 200, "description": "Plain-language question for the owner." },
+          "current_value": { "type": "string", "maxLength": 200, "description": "What research found, in a short readable form, or empty." },
+          "reason": { "type": "string", "enum": ["unverified", "conflicting_sources", "missing", "inferred", "outdated"] }
+        }
+      }
+    }
+  }
+}

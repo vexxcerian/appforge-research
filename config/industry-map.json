@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "notes": "Which modules each industry gets. 'always' modules go into every app. 'core' are added for the industry. 'recommended' are added when there is room after core modules and research-backed opportunities. Planner rules (feature-plan.js) can still add or drop modules based on the profile.",
+  "always": ["home", "contact", "about"],
+  "industries": {
+    "restaurant":           { "label": "Restaurant",                       "core": ["hours", "menu", "online_ordering", "specials"], "recommended": ["reservations", "reviews_showcase", "gallery", "loyalty", "faq"] },
+    "cafe_bakery":          { "label": "Cafe or bakery",                   "core": ["hours", "menu", "online_ordering", "specials"], "recommended": ["loyalty", "gallery", "events_calendar", "reviews_showcase", "faq"] },
+    "bar_brewery":          { "label": "Bar, brewery or winery",           "core": ["hours", "menu", "events_calendar", "specials"], "recommended": ["gallery", "reviews_showcase", "loyalty", "reservations"] },
+    "food_truck_catering":  { "label": "Food truck or caterer",            "core": ["menu", "events_calendar", "specials", "quote_request"], "recommended": ["online_ordering", "gallery", "service_area", "reviews_showcase"] },
+    "salon_barber":         { "label": "Salon or barbershop",              "core": ["hours", "services_list", "appointment_booking", "staff_profiles"], "recommended": ["gallery", "reviews_showcase", "loyalty", "faq"] },
+    "spa_wellness":         { "label": "Spa, massage or wellness",         "core": ["hours", "services_list", "appointment_booking"], "recommended": ["staff_profiles", "gallery", "reviews_showcase", "faq", "loyalty"] },
+    "fitness_gym":          { "label": "Gym, studio or trainer",           "core": ["hours", "class_schedule", "services_list", "appointment_booking"], "recommended": ["staff_profiles", "events_calendar", "faq", "reviews_showcase"] },
+    "medical_dental":       { "label": "Medical, dental or therapy office","core": ["hours", "services_list", "appointment_booking", "client_forms"], "recommended": ["staff_profiles", "faq", "reviews_showcase"] },
+    "home_services":        { "label": "Home services or contractor",      "core": ["services_list", "quote_request", "service_area", "portfolio"], "recommended": ["emergency_contact", "reviews_showcase", "faq", "hours"] },
+    "auto_services":        { "label": "Auto repair, detailing or towing", "core": ["hours", "services_list", "appointment_booking", "quote_request"], "recommended": ["emergency_contact", "reviews_showcase", "faq", "specials"] },
+    "repair_services":      { "label": "Phone, electronics or appliance repair", "core": ["hours", "services_list", "quote_request", "appointment_booking"], "recommended": ["product_catalog", "reviews_showcase", "faq", "specials"] },
+    "retail_store":         { "label": "Retail store",                     "core": ["hours", "product_catalog", "specials"], "recommended": ["loyalty", "events_calendar", "gallery", "reviews_showcase", "faq"] },
+    "ecommerce_brand":      { "label": "Online or made-to-order brand",    "core": ["product_catalog", "specials", "faq"], "recommended": ["gallery", "reviews_showcase", "loyalty", "events_calendar"] },
+    "real_estate":          { "label": "Real estate",                      "core": ["listings", "services_list", "quote_request"], "recommended": ["staff_profiles", "reviews_showcase", "faq", "service_area"] },
+    "professional_services":{ "label": "Professional services",            "core": ["services_list", "appointment_booking", "quote_request"], "recommended": ["staff_profiles", "faq", "reviews_showcase", "client_forms"] },
+    "legal_services":       { "label": "Law office",                       "core": ["services_list", "appointment_booking", "staff_profiles"], "recommended": ["faq", "client_forms", "reviews_showcase", "hours"] },
+    "financial_insurance":  { "label": "Tax, finance or insurance",        "core": ["services_list", "appointment_booking", "quote_request"], "recommended": ["staff_profiles", "faq", "client_forms", "hours"] },
+    "church_nonprofit":     { "label": "Church or nonprofit",              "core": ["class_schedule", "events_calendar", "donations"], "recommended": ["staff_profiles", "specials", "gallery", "faq"] },
+    "education_childcare":  { "label": "School, tutoring or childcare",    "core": ["hours", "class_schedule", "services_list", "client_forms"], "recommended": ["events_calendar", "staff_profiles", "faq", "gallery"] },
+    "pet_services":         { "label": "Pet grooming, boarding or vet",    "core": ["hours", "services_list", "appointment_booking"], "recommended": ["gallery", "reviews_showcase", "client_forms", "faq", "loyalty"] },
+    "events_entertainment": { "label": "Venue, events or entertainment",   "core": ["events_calendar", "quote_request", "gallery"], "recommended": ["services_list", "reviews_showcase", "faq", "hours"] },
+    "lodging_hospitality":  { "label": "Hotel, B&B or rental",             "core": ["reservations", "gallery", "services_list"], "recommended": ["faq", "reviews_showcase", "events_calendar", "hours"] },
+    "photography_creative": { "label": "Photography or creative studio",   "core": ["portfolio", "services_list", "appointment_booking"], "recommended": ["quote_request", "reviews_showcase", "faq", "gallery"] },
+    "cleaning_services":    { "label": "Cleaning services",                "core": ["services_list", "quote_request", "service_area"], "recommended": ["appointment_booking", "reviews_showcase", "faq", "loyalty"] },
+    "other":                { "label": "Other",                            "core": ["hours", "services_list"], "recommended": ["gallery", "reviews_showcase", "faq", "quote_request"] }
+  }
+}

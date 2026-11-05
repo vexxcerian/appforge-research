@@ -1,0 +1,184 @@
+{
+  "business_name": "Sweet Juniper Bakehouse",
+  "industry": "cafe_bakery",
+  "industry_label": "Cafe or bakery",
+  "blocked": false,
+  "blockers": [],
+  "warnings": [],
+  "modules": [
+    {
+      "id": "home",
+      "name": "Home",
+      "order": 1,
+      "source": "always",
+      "reason": "every app",
+      "mode": "native",
+      "tool": null,
+      "data_ready": true,
+      "missing": []
+    },
+    {
+      "id": "hours",
+      "name": "Hours",
+      "order": 3,
+      "source": "core",
+      "reason": "core for cafe or bakery",
+      "mode": "native",
+      "tool": null,
+      "data_ready": true,
+      "missing": []
+    },
+    {
+      "id": "menu",
+      "name": "Menu",
+      "order": 4,
+      "source": "rule",
+      "reason": "they publish a menu",
+      "mode": "native",
+      "tool": null,
+      "data_ready": true,
+      "missing": []
+    },
+    {
+      "id": "online_ordering",
+      "name": "Order",
+      "order": 5,
+      "source": "rule",
+      "reason": "they already use Square Online",
+      "mode": "deep_link",
+      "tool": {
+        "provider": "Square Online",
+        "url": "https://sweetjuniperbakehouse.square.site",
+        "type": "online_ordering"
+      },
+      "data_ready": true,
+      "missing": []
+    },
+    {
+      "id": "specials",
+      "name": "Specials",
+      "order": 6,
+      "source": "core",
+      "reason": "core for cafe or bakery",
+      "mode": "native",
+      "tool": null,
+      "data_ready": false,
+      "missing": [
+        "current specials (optional)"
+      ]
+    },
+    {
+      "id": "quote_request",
+      "name": "Get a Quote",
+      "order": 13,
+      "source": "opportunity",
+      "reason": "Take custom cake requests without phone tag",
+      "mode": "native",
+      "tool": null,
+      "data_ready": true,
+      "missing": []
+    },
+    {
+      "id": "reviews_showcase",
+      "name": "Reviews",
+      "order": 17,
+      "source": "rule",
+      "reason": "4.8 stars from 212 reviews",
+      "mode": "native",
+      "tool": null,
+      "data_ready": true,
+      "missing": []
+    },
+    {
+      "id": "about",
+      "name": "About",
+      "order": 20,
+      "source": "always",
+      "reason": "every app",
+      "mode": "native",
+      "tool": null,
+      "data_ready": true,
+      "missing": []
+    },
+    {
+      "id": "contact",
+      "name": "Contact",
+      "order": 21,
+      "source": "always",
+      "reason": "every app",
+      "mode": "native",
+      "tool": null,
+      "data_ready": true,
+      "missing": []
+    },
+    {
+      "id": "faq",
+      "name": "FAQ",
+      "order": 23,
+      "source": "recommended",
+      "reason": "often useful for cafe or bakery",
+      "mode": "native",
+      "tool": null,
+      "data_ready": false,
+      "missing": [
+        "common questions and answers"
+      ]
+    }
+  ],
+  "navigation": {
+    "tabs": [
+      "home",
+      "online_ordering",
+      "menu",
+      "quote_request",
+      "more"
+    ],
+    "more": [
+      "hours",
+      "specials",
+      "reviews_showcase",
+      "about",
+      "contact",
+      "faq"
+    ]
+  },
+  "suggested": [
+    {
+      "id": "loyalty",
+      "name": "Rewards",
+      "reason": "often useful for cafe or bakery; needs reward and stamp code from the owner"
+    },
+    {
+      "id": "gallery",
+      "name": "Gallery",
+      "reason": "often useful for cafe or bakery; needs photos from the owner"
+    },
+    {
+      "id": "events_calendar",
+      "name": "Events",
+      "reason": "often useful for cafe or bakery; needs upcoming events from the owner"
+    }
+  ],
+  "quick_actions": [
+    {
+      "id": "order",
+      "label": "Order"
+    },
+    {
+      "id": "quote",
+      "label": "Get a quote"
+    },
+    {
+      "id": "call",
+      "label": "Call"
+    },
+    {
+      "id": "directions",
+      "label": "Directions"
+    }
+  ],
+  "owner_todo": [
+    "Add content for Specials: current specials (optional)",
+    "Add content for FAQ: common questions and answers"
+  ]
+}

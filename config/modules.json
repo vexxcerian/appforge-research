@@ -1,0 +1,231 @@
+{
+  "version": "1.0",
+  "notes": "The module library. Each module is a screen or feature the generator knows how to build. 'order' sets navigation order. 'deep_link_tool' names the existing_tools type that, when the business already uses one, turns the module into a link to that tool instead of a rebuilt copy.",
+  "modules": [
+    {
+      "id": "home",
+      "name": "Home",
+      "order": 1,
+      "summary": "Landing screen: logo, tagline, open/closed badge and big quick-action buttons (call, directions, order or book).",
+      "build_spec": "Hero with logo (or the business name set in the brand font), tagline, an open-now badge computed from hours, and 2-4 quick-action buttons chosen from the plan's modules (Call, Directions, Order, Book, Get a quote). Show the current special or announcement if one exists.",
+      "inputs": ["business.name", "business.tagline", "brand", "hours", "contact.phone"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "about",
+      "name": "About",
+      "order": 20,
+      "summary": "The business story, what makes it different, and founding year.",
+      "build_spec": "Short story from business.description, a list of differentiators, and the founding year if known. No invented history.",
+      "inputs": ["business.description", "differentiators", "business.year_founded"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "contact",
+      "name": "Contact",
+      "order": 21,
+      "summary": "Tap-to-call, text, email, address with directions, and social links.",
+      "build_spec": "tel:, sms: and mailto: buttons for whatever contact info exists, the address with a Directions button (Google Maps link built from the address; skip it when address_is_public is false) and icons for each social profile.",
+      "inputs": ["contact", "socials"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "hours",
+      "name": "Hours",
+      "order": 3,
+      "summary": "Weekly hours with today highlighted and a live open-now indicator.",
+      "build_spec": "Seven-day table with today highlighted, open/closed now computed on the device clock (handle split shifts and past-midnight closing), and the hours notes (holidays, seasonal changes).",
+      "inputs": ["hours"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "menu",
+      "name": "Menu",
+      "order": 4,
+      "summary": "Food or drink menu by category, with prices and dietary tags.",
+      "build_spec": "Category tabs or chips, item cards with name, description and price, dietary/specialty tag filters, and a search box when there are more than 25 items. Prices shown exactly as given; never invent one.",
+      "inputs": ["offerings"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "online_ordering",
+      "name": "Order",
+      "order": 5,
+      "summary": "Order online: a cart that sends a pickup order request, or a link to the ordering service they already use.",
+      "build_spec": "Native mode: add-to-cart from the menu or catalog, a cart with quantities and notes, pickup time picker, and a Send Order button that opens a pre-filled SMS or email to the business (no payments). Deep-link mode: one clear Order Online button to the existing provider plus delivery-platform buttons.",
+      "inputs": ["offerings", "contact", "existing_tools"],
+      "deep_link_tool": "online_ordering"
+    },
+    {
+      "id": "specials",
+      "name": "Specials",
+      "order": 6,
+      "summary": "Daily or weekly specials and announcements the owner can update.",
+      "build_spec": "A list of specials/announcements with optional date ranges; expired ones hide automatically. Seed it from research only if specials were found, otherwise show an owner placeholder.",
+      "inputs": ["offerings"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "reservations",
+      "name": "Reserve",
+      "order": 7,
+      "summary": "Table reservation request, or a link to their existing reservation system.",
+      "build_spec": "Native mode: party size, date, time and name/phone, sent as a pre-filled SMS or email request, clearly labeled as a request until the business confirms. Deep-link mode: a Reserve button to the existing provider.",
+      "inputs": ["hours", "contact", "existing_tools"],
+      "deep_link_tool": "reservations"
+    },
+    {
+      "id": "appointment_booking",
+      "name": "Book",
+      "order": 8,
+      "summary": "Book an appointment: pick a service and preferred time, or jump to the booking tool they already use.",
+      "build_spec": "Native mode: choose service (from services list), optional staff member, preferred date and time window within business hours, name and phone, sent as a pre-filled SMS or email request. Deep-link mode: a Book Now button to the existing booking provider, shown on the home screen too.",
+      "inputs": ["offerings", "hours", "contact", "existing_tools"],
+      "deep_link_tool": "appointment_booking"
+    },
+    {
+      "id": "services_list",
+      "name": "Services",
+      "order": 9,
+      "summary": "Services with descriptions, price ranges and durations.",
+      "build_spec": "Grouped service cards with description and price or 'Call for pricing' when no price is known. Each card has a Book or Quote button when those modules are in the plan.",
+      "inputs": ["offerings"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "staff_profiles",
+      "name": "Team",
+      "order": 10,
+      "summary": "Team member cards with roles and specialties (owner-provided).",
+      "build_spec": "Cards with photo placeholder, first name, role and specialties. Content comes from the owner only; research never fills this with names.",
+      "inputs": [],
+      "deep_link_tool": null
+    },
+    {
+      "id": "gallery",
+      "name": "Gallery",
+      "order": 11,
+      "summary": "Photo grid of products, food or the space (owner uploads).",
+      "build_spec": "Responsive photo grid with a full-screen viewer and swipe. Uses owner-supplied images only; shows labeled placeholders until they are added.",
+      "inputs": ["brand.imagery_notes"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "portfolio",
+      "name": "Our Work",
+      "order": 12,
+      "summary": "Before/after project showcase for trades and creative work.",
+      "build_spec": "Project cards with title, service type, location (town only) and a before/after slider when two images exist. Owner-supplied images only.",
+      "inputs": ["offerings", "contact.service_area"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "quote_request",
+      "name": "Get a Quote",
+      "order": 13,
+      "summary": "Quote request form: what they need, details, photos, and how to reach them.",
+      "build_spec": "Form with service type (from services), description, address or town, preferred contact method and optional photos; submits as a pre-filled email (photos attached by the customer) or SMS. Deep-link mode if they already use a quote form provider.",
+      "inputs": ["offerings", "contact"],
+      "deep_link_tool": "quote_form"
+    },
+    {
+      "id": "service_area",
+      "name": "Service Area",
+      "order": 14,
+      "summary": "Towns and areas covered, with a quick 'do you serve my area?' check.",
+      "build_spec": "List of covered towns/areas and a search box that matches the customer's town against the list, with a Call to Confirm fallback.",
+      "inputs": ["contact.service_area"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "product_catalog",
+      "name": "Shop",
+      "order": 15,
+      "summary": "Product catalog by category with inquiry or buy links.",
+      "build_spec": "Product grid with categories, search, price and availability text, and an Ask About This button (SMS/email). Deep-link mode links each product or the whole catalog to their existing online store.",
+      "inputs": ["offerings", "existing_tools"],
+      "deep_link_tool": "ecommerce_store"
+    },
+    {
+      "id": "loyalty",
+      "name": "Rewards",
+      "order": 16,
+      "summary": "Digital punch card customers show at checkout.",
+      "build_spec": "Punch card stored on the device; staff add a stamp by entering the shop's 4-digit code set in the app's settings. Reward text set by the owner. State clearly that it is a simple honor-system card, not a payment system. Deep-link mode if they already run a loyalty program.",
+      "inputs": [],
+      "deep_link_tool": "loyalty_program"
+    },
+    {
+      "id": "reviews_showcase",
+      "name": "Reviews",
+      "order": 17,
+      "summary": "Rating summary with links to leave or read reviews on Google, Facebook or Yelp.",
+      "build_spec": "Show the rating and review count with its source, Leave a Review buttons for each review platform found, and a testimonials list that only shows quotes the owner supplies. Never write or paraphrase reviews as testimonials.",
+      "inputs": ["reputation", "socials"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "events_calendar",
+      "name": "Events",
+      "order": 18,
+      "summary": "Upcoming events, classes or pop-ups with add-to-calendar.",
+      "build_spec": "Upcoming list grouped by month with date, time, place and description; past events hide automatically; each has an Add to Calendar (.ics download) button.",
+      "inputs": [],
+      "deep_link_tool": null
+    },
+    {
+      "id": "class_schedule",
+      "name": "Schedule",
+      "order": 19,
+      "summary": "Weekly class, session or service-time timetable.",
+      "build_spec": "Day-by-day timetable with class/session name, time, instructor or leader (owner-provided) and a Sign Up or Book link when available.",
+      "inputs": ["offerings", "hours"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "listings",
+      "name": "Listings",
+      "order": 22,
+      "summary": "Property listings with photos, price and an inquiry button.",
+      "build_spec": "Listing cards with photo placeholder, price, beds/baths/sqft, address (town only unless the owner adds more) and Ask About This Property. Seeded empty; the owner or their listing feed fills it.",
+      "inputs": [],
+      "deep_link_tool": null
+    },
+    {
+      "id": "faq",
+      "name": "FAQ",
+      "order": 23,
+      "summary": "Answers to common questions (parking, payment, policies).",
+      "build_spec": "Accordion of questions and answers. Seed only with questions whose answers came from research (for example payment methods, parking, allergy policy); everything else is an owner placeholder.",
+      "inputs": ["offerings", "reputation"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "donations",
+      "name": "Give",
+      "order": 24,
+      "summary": "Giving or donation link for churches and nonprofits.",
+      "build_spec": "A Give button linking to their existing giving page or payment link (never collect card details in the app), plus the mission statement.",
+      "inputs": ["existing_tools", "business.description"],
+      "deep_link_tool": "other"
+    },
+    {
+      "id": "emergency_contact",
+      "name": "Emergency",
+      "order": 2,
+      "summary": "One-tap urgent call for 24/7 or emergency services.",
+      "build_spec": "A large, high-contrast Call Now button pinned to the top of the home screen, with the after-hours note. Only included when the business advertises emergency or 24/7 service.",
+      "inputs": ["contact.phone", "hours.notes"],
+      "deep_link_tool": null
+    },
+    {
+      "id": "client_forms",
+      "name": "Forms",
+      "order": 25,
+      "summary": "Links to new-client or intake forms the business already hosts.",
+      "build_spec": "List of forms with a short description each, linking out to the business's existing secure form or patient/client portal. The app never collects health, legal or financial details itself.",
+      "inputs": ["existing_tools"],
+      "deep_link_tool": "other"
+    }
+  ]
+}

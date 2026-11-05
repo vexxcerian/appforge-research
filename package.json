@@ -1,0 +1,30 @@
+{
+  "name": "appforge-research",
+  "version": "1.0.0",
+  "description": "Researches a small business on the web and turns it into a confirmed profile, a module plan and a build brief for AppForge.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "bin": {
+    "appforge-research": "bin/research.js",
+    "appforge-confirm": "bin/confirm.js",
+    "appforge-plan": "bin/plan.js",
+    "appforge-generate": "bin/generate.js"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.js\"",
+    "research": "node bin/research.js",
+    "confirm": "node bin/confirm.js",
+    "plan": "node bin/plan.js",
+    "generate": "node bin/generate.js",
+    "serve": "node bin/serve.js"
+  },
+  "devDependencies": {
+    "ajv": "^8.20.0"
+  }
+}

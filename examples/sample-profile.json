@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-11-05T18:30:00Z",
+  "research_meta": {
+    "research_model": "claude-sonnet-5-5",
+    "extract_model": "claude-sonnet-5-5",
+    "tool_mode": "mock",
+    "web_searches": 6,
+    "web_fetches": 5,
+    "places_used": true,
+    "brand_signals_used": true,
+    "notes_truncated": false
+  },
+  "owner_confirmed": { "confirmed": false, "confirmed_at": "", "ownership_verified": false, "verification_method": "" },
+  "business": {
+    "name": "Sweet Juniper Bakehouse",
+    "tagline": "Small-batch breads and pastries, baked fresh every morning",
+    "description": "A family-run bakery selling sourdough, cinnamon rolls, seasonal pies and custom celebration cakes. Customers pick up at the storefront or order cakes ahead for birthdays and weddings.",
+    "industry": "cafe_bakery",
+    "subcategory": "family-run bakery with custom cakes",
+    "business_model": "storefront",
+    "status": "operating",
+    "year_founded": "2019",
+    "price_level": "moderate"
+  },
+  "contact": {
+    "phone": "(256) 555-0142",
+    "email": "hello@sweetjuniperbakehouse.example",
+    "website": "https://sweetjuniperbakehouse.example",
+    "address": { "street": "214 Main St", "city": "Riverbend", "region": "AL", "postal_code": "35000", "country": "US" },
+    "address_is_public": true,
+    "service_area": [],
+    "google_maps_url": "https://maps.google.com/?cid=1234567890"
+  },
+  "hours": {
+    "known": true,
+    "weekly": [
+      { "day": "tue", "open": "07:00", "close": "14:00" },
+      { "day": "wed", "open": "07:00", "close": "14:00" },
+      { "day": "thu", "open": "07:00", "close": "14:00" },
+      { "day": "fri", "open": "07:00", "close": "14:00" },
+      { "day": "sat", "open": "08:00", "close": "13:00" }
+    ],
+    "notes": "Closed Sunday and Monday. Holiday pie orders close a week before Thanksgiving.",
+    "basis": "google_listing"
+  },
+  "offerings": {
+    "kind": "menu",
+    "categories": [
+      {
+        "name": "Breads",
+        "items": [
+          { "name": "Country Sourdough", "description": "Two-day ferment, crackly crust", "price": "$9" },
+          { "name": "Honey Oat Sandwich Loaf", "description": "", "price": "$7" }
+        ]
+      },
+      {
+        "name": "Pastries",
+        "items": [
+          { "name": "Cinnamon Roll", "description": "Cream cheese frosting", "price": "$4.50" },
+          { "name": "Seasonal Hand Pie", "description": "Flavor changes weekly", "price": "$5" }
+        ]
+      },
+      {
+        "name": "Custom Cakes",
+        "items": [
+          { "name": "Celebration Cake (6 inch)", "description": "Order 5 days ahead", "price": "From $45" },
+          { "name": "Wedding Cakes", "description": "Consultation required", "price": "" }
+        ]
+      }
+    ],
+    "tags": ["made from scratch", "gluten-free option on Saturdays"]
+  },
+  "existing_tools": [
+    { "type": "online_ordering", "provider": "Square Online", "url": "https://sweetjuniperbakehouse.square.site" }
+  ],
+  "brand": {
+    "colors": [
+      { "hex": "#3f6b4f", "role": "primary", "basis": "website_css" },
+      { "hex": "#e8a33d", "role": "accent", "basis": "website_css" },
+      { "hex": "#fbf6ee", "role": "background", "basis": "website_css" }
+    ],
+    "logo_url": "https://sweetjuniperbakehouse.example/images/logo.png",
+    "fonts_observed": ["Fraunces"],
+    "tone": "warm_family",
+    "voice_notes": "Warm and chatty, signs posts 'from the Juniper kitchen', light emoji use.",
+    "imagery_notes": "Close-up shots of bread and pastries on wooden boards, natural light."
+  },
+  "socials": [
+    { "platform": "facebook", "url": "https://www.facebook.com/sweetjuniperbakehouse", "handle": "sweetjuniperbakehouse" },
+    { "platform": "instagram", "url": "https://www.instagram.com/sweetjuniperbakes", "handle": "sweetjuniperbakes" }
+  ],
+  "audience": {
+    "primary_customers": ["local families", "morning commuters", "people ordering celebration cakes"],
+    "languages": ["English"],
+    "local_focus": true
+  },
+  "reputation": {
+    "has_reviews": true,
+    "rating": 4.8,
+    "review_count": 212,
+    "rating_source": "Google",
+    "praise_themes": ["Cinnamon rolls are the standout", "Friendly staff who remember regulars", "Cakes look and taste great"],
+    "complaint_themes": ["Popular items sell out before noon on Saturdays", "Hard to get through on the phone to order cakes"]
+  },
+  "differentiators": ["Two-day sourdough", "Custom celebration and wedding cakes", "Family-run since 2019"],
+  "competitors": [
+    { "name": "Downtown Donut Co.", "note": "Offers online pre-ordering for pickup" }
+  ],
+  "app_opportunities": [
+    { "module": "online_ordering", "need": "Let customers reserve popular items before they sell out", "evidence": "Reviews say Saturday items sell out before noon [S4]" },
+    { "module": "quote_request", "need": "Take custom cake requests without phone tag", "evidence": "Reviews mention trouble reaching them by phone for cake orders [S4]" },
+    { "module": "specials", "need": "Announce the weekly hand pie flavor", "evidence": "Facebook posts announce the flavor every Tuesday [S3]" }
+  ],
+  "sources": [
+    { "id": "S0", "url": "intake", "title": "Intake form", "kind": "owner" },
+    { "id": "S1", "url": "https://maps.google.com/?cid=1234567890", "title": "Google listing", "kind": "google_listing" },
+    { "id": "S2", "url": "https://sweetjuniperbakehouse.example", "title": "Sweet Juniper Bakehouse | Home", "kind": "business_website" },
+    { "id": "S3", "url": "https://www.facebook.com/sweetjuniperbakehouse", "title": "Sweet Juniper Bakehouse | Facebook", "kind": "social_profile" },
+    { "id": "S4", "url": "https://www.yelp.com/biz/sweet-juniper-bakehouse-riverbend", "title": "Sweet Juniper Bakehouse - Yelp", "kind": "review_site" }
+  ],
+  "facts_provenance": [
+    { "field": "business.name", "source_ids": ["S1", "S2"], "basis": "business_website" },
+    { "field": "contact.address", "source_ids": ["S1", "S2"], "basis": "business_website" },
+    { "field": "contact.phone", "source_ids": ["S1", "S2"], "basis": "business_website" },
+    { "field": "hours", "source_ids": ["S1"], "basis": "google_listing" },
+    { "field": "offerings", "source_ids": ["S2"], "basis": "business_website" },
+    { "field": "existing_tools", "source_ids": ["S2"], "basis": "business_website" },
+    { "field": "brand.colors", "source_ids": ["S2"], "basis": "business_website" },
+    { "field": "reputation", "source_ids": ["S1", "S4"], "basis": "review_site" }
+  ],
+  "confidence": {
+    "overall": "high",
+    "identity_match": "confirmed",
+    "identity_notes": "Name, address and phone match across the website, Google listing and Facebook. No other bakery by this name in Alabama."
+  },
+  "needs_confirmation": [
+    { "field": "hours", "question": "Are these your current hours?", "current_value": "Tue-Fri 07:00-14:00, Sat 08:00-13:00", "reason": "unverified" },
+    { "field": "offerings", "question": "Are these menu prices still current?", "current_value": "Cinnamon Roll $4.50, Country Sourdough $9", "reason": "outdated" }
+  ]
+}
